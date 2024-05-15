@@ -1,0 +1,65 @@
+-crear base de datos
+	create database e_commerce;
+-empezar a manipular la base de datos
+	use e_commerce;
+-crear tabla clientes
+	CREATE TABLE `clientes` (
+	  `id_clien` int NOT NULL AUTO_INCREMENT,
+	  `razon_social` varchar(20) NOT NULL,
+	  `direccion` varchar(20) NOT NULL,
+	  `telefono` bigint DEFAULT NULL,
+	  `nombre_clien` varchar(20) NOT NULL,
+	  `correo` varchar(20) NOT NULL,
+	  `contrasenia` varchar(20) NOT NULL,
+	  PRIMARY KEY (`id_clien`));
+
+-agregar datos a la tabla clientes
+	INSERT INTO `clientes` VALUES (9,'jugos','KR 12 ESTE A 20',32283445,'andres','peiroepe@gmail.com','11312334');
+
+-crear tabla categoria
+	CREATE TABLE `categoria` (
+ 	 `id_categ` int NOT NULL,
+	  `nombre_categ` varchar(20) NOT NULL,
+	  PRIMARY KEY (`id_categ`));
+
+-agregar datos a la tabla categoria
+	INSERT INTO `categoria` VALUES (1,'aditivos'),(2,'especias'),(3,'hierbas'),(4,'molidos');
+
+-crear tabla producto
+	CREATE TABLE `producto` (
+	  `id_prod` int NOT NULL AUTO_INCREMENT,
+	  `nombre_prod` varchar(20) NOT NULL,
+	  `presentacion` varchar(10) NOT NULL,
+	  `existencia` int NOT NULL,
+	  `precio_venta` int DEFAULT NULL,
+	  `id_categ` int NOT NULL,
+	  `descripcion` tinytext NOT NULL,
+	  `url_img` varchar(250) DEFAULT NULL,
+	  PRIMARY KEY (`id_prod`),
+	  KEY `id_categ` (`id_categ`),
+	  CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`id_categ`) REFERENCES `categoria` (`id_categ`));
+
+-agregar datos a la tabla producto
+
+-crear tabla compras
+	CREATE TABLE `compras` (
+	  `id_comp` int NOT NULL AUTO_INCREMENT,
+	  `fecha_comp` date DEFAULT NULL,
+	  `id_prod` int NOT NULL,
+	  `cantidad` int NOT NULL,
+	  `precio_comp` int DEFAULT NULL,
+	  PRIMARY KEY (`id_comp`),
+	  KEY `id_prod` (`id_prod`),
+	  CONSTRAINT `compras_ibfk_1` FOREIGN KEY (`id_prod`) REFERENCES `producto` (`id_prod`));
+-crear tabla carrito
+	CREATE TABLE `carrito` (
+	  `id_clien` int NOT NULL COMMENT '7',
+	  `id_prod` int NOT NULL,
+	  `estado_prod` int DEFAULT NULL,
+	  `cantidad` int DEFAULT NULL,
+	  `fecha_venta` datetime DEFAULT NULL,
+	  `precio_venta` int DEFAULT NULL,
+	  KEY `id_clien` (`id_clien`),
+	  KEY `id_prod` (`id_prod`),
+	  CONSTRAINT `carrito_ibfk_1` FOREIGN KEY (`id_clien`) REFERENCES `clientes` (`id_clien`),
+	  CONSTRAINT `carrito_ibfk_2` FOREIGN KEY (`id_prod`) REFERENCES `producto` (`id_prod`));
